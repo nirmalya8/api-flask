@@ -1,0 +1,37 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+python-docx = "==0.8.10"
+pypng = "==0.0.20"
+gunicorn = "==20.0.4"
+cryptography = "*"
+spacy = "*"
+chatterbot-corpus = "*"
+pandas = "*"
+numpy = "*"
+keras = "*"
+tensorflow = "*"
+scikit-image = "*"
+matplotlib = "==3.2"
+scikit-learn = "*"
+opencv-python = "*"
+lxml = "*"
+urllib3 = "*"
+beautifulsoup4 = "*"
+requests = "*"
+Flask = "==1.1.1"
+PyQRCode = "==1.2.1"
+ChatterBot = "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-flask = "*"
+pylint = "*"
+Flask-Cors = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"

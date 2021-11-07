@@ -1,0 +1,7 @@
+Flask
+flask-cors
+pytest
+pytest-cov
+pytest-flask
+requests 
+pylint

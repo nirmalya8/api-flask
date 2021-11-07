@@ -3,11 +3,13 @@ app = Flask(__name__)
 
 menucard = [{'Item' : 'Rice', 'Price':10},{'Item': 'Dal','Price':15},{'Item':'Chicken','Price':20},{'Item':'Mutton', 'Price':25},{'Item':'Fish','Price':20},{'Item':'IceCream','Price':10}]
 orders = []
+
 @app.route('/') 
 def hello_world():
     response = jsonify('Hello world!')
     response.status_code = 200
     return response
+
 @app.route('/order/<int:id>',methods=['GET','POST'])
 def take_orders(id):
     response = {}
@@ -28,6 +30,7 @@ def take_orders(id):
         response.status_code =200
     print(f"Orders = {orders} ")
     return response
+
 @app.route('/show',methods=['GET'])
 def show_orders():
     response = ' '

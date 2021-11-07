@@ -10,6 +10,11 @@ def hello_world():
     response.status_code = 200
     return response
 
+@app.route('/showmenu')
+def show_menu():
+    response = jsonify(menucard)
+    return response
+
 @app.route('/order/<int:id>',methods=['GET','POST'])
 def take_orders(id):
     response = {}

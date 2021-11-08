@@ -47,6 +47,20 @@ def show_orders():
         response.status_code = 200
     return response
 
+@app.route('/price', methods = ['GET'])
+def show_price():
+    response = {}
+    if len(orders) == 0:
+        response = jsonify({'Orders':'Haven\'t ordered yet','Price':0})
+        response.status_code = 404
+    else:
+        p = 0
+        for i in orders:
+            p = p + i['Price']*i['Quantity']
+        response = jsonify({'Orders':orders,'Price':p})
+        response.status_code = 200
+    return response
+
 @app.route('/delete/<int:delid>',methods=['GET','POST'])
 def delete_order(delid):
     response = {}

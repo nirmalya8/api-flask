@@ -34,3 +34,12 @@ def test_deleting_orders():
         else:
             assert resp.status_code == 200
 
+
+def test_show_price():
+    resp = requests.get(url+'price')
+    response = resp.json()
+    if(response['Price']==0):
+        assert resp.status_code == 404
+    else:
+        assert resp.status_code == 200
+

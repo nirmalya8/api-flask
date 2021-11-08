@@ -43,3 +43,6 @@ def test_show_price():
     else:
         assert resp.status_code == 200
 
+def test_show_menucard():
+    resp = requests.get(url+'showmenu')
+    assert resp.status_code == 200

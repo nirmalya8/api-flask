@@ -34,7 +34,6 @@ def take_orders(id):
                 i['Quantity']+=1
         response = jsonify({'Status': 'Updated quantity','Item':menucard[id]})
         response.status_code =200
-    print(f"Orders = {orders} ")
     return response
 
 @app.route('/show',methods=['GET'])
@@ -78,7 +77,6 @@ def delete_order(delid):
     else:
         response = jsonify({'Status':'Wasn\'t in the menu'})
         response.status_code = 404
-    print(f"Orders = {orders}")
     return response
 
 @app.route('/additem',methods=['GET','PUT'])

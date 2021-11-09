@@ -12,7 +12,7 @@ def hello_world():
 
 @app.route('/showmenu')
 def show_menu():
-    response = jsonify(menucard)
+    response = jsonify({'Menu':menucard})
     response.status_code = 200
     return response
 
@@ -101,7 +101,7 @@ def delete_from_menu():
     response.status_code = 200
     return response
 
-    
+
 if __name__ == "__main__":
     app.run(debug=True)
 

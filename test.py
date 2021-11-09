@@ -46,3 +46,21 @@ def test_show_price():
 def test_show_menucard():
     resp = requests.get(url+'showmenu')
     assert resp.status_code == 200
+
+def test_adding_to_menucard():
+    resp = requests.get(url+'showmenu')
+    response = resp.json()
+    resp1 = requests.get(url+'additem')
+    resp2 = requests.get(url+'showmenu')
+    response2 = resp2.json()
+    if len(response2['Menu']) > len(response['Menu']):
+        assert resp1.status_code == 200
+
+def test_deleting_from_menucard():
+    resp = requests.get(url+'showmenu')
+    response = resp.json()
+    resp1 = requests.get(url+'delitem')
+    resp2 = requests.get(url+'showmenu')
+    response2 = resp2.json()
+    if len(response2['Menu']) < len(response['Menu']):
+        assert resp1.status_code == 200

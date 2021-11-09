@@ -80,7 +80,28 @@ def delete_order(delid):
         response.status_code = 404
     print(f"Orders = {orders}")
     return response
-            
+
+@app.route('/additem',methods=['GET','PUT'])
+def add_to_menu():
+    item = {'Item':'New Item','Price':15}
+    menucard.append(item)
+    response = jsonify({'Status': 'Added','Item':item})
+    response.status_code =200
+    return response          
+
+
+@app.route('/delitem',methods = ['GET','DELETE'])
+def delete_from_menu(): 
+    item = menucard[2]
+    for i in menucard:
+        if i == item:
+            menucard.remove(i)
+            break
+    response = jsonify({'Status':'Deleted','Item':item})
+    response.status_code = 200
+    return response
+
+    
 if __name__ == "__main__":
     app.run(debug=True)
 

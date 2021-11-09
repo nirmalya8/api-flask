@@ -23,5 +23,8 @@ Step 5: If you are interested to run the tests as well, you can run `pytest test
 3. `'/order/<int: id>'`: Route to order item `id` from the menucard. Can order a certain item any number of times.
 4. `'/show'`: Route to show current orders
 5. `'/delete/<int: id>'`: Route to delete item `id` from the list of orders returned by `'/show'`
+6. `'/price'` : Route to show the total price of items ordered
+7. `'/additem'` : Route to add an item into the menu (PUT)
+8. `'/delitem'` : Route to delete an item from the menu (DELETE)
 
 

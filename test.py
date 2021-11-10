@@ -54,7 +54,9 @@ def test_adding_to_menucard():
     resp2 = requests.get(url+'showmenu')
     response2 = resp2.json()
     if len(response2['Menu']) > len(response['Menu']):
-        assert resp1.status_code == 200
+        assert resp1.status_code == 201
+    else: 
+        assert resp.status_code == 400
 
 def test_deleting_from_menucard():
     resp = requests.get(url+'showmenu')
@@ -64,3 +66,5 @@ def test_deleting_from_menucard():
     response2 = resp2.json()
     if len(response2['Menu']) < len(response['Menu']):
         assert resp1.status_code == 200
+    else:
+        assert resp.status_code == 404

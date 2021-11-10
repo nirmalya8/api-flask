@@ -82,9 +82,17 @@ def delete_order(delid):
 @app.route('/additem',methods=['GET','PUT'])
 def add_to_menu():
     item = {'Item':'New Item','Price':15}
-    menucard.append(item)
-    response = jsonify({'Status': 'Added','Item':item})
-    response.status_code =200
+    f = False
+    for i in menucard:
+        if i ==item:
+            f = True
+    if not f:
+        menucard.append(item)
+        response = jsonify({'Status': 'Added','Item':item})
+        response.status_code =201
+    else:
+        response = jsonify({'Status': 'Already There','Item':item})
+        response.status_code =400
     return response          
 
 
@@ -94,12 +102,12 @@ def delete_from_menu():
     for i in menucard:
         if i == item:
             menucard.remove(i)
-            break
-    response = jsonify({'Status':'Deleted','Item':item})
-    response.status_code = 200
-    return response
+            response = jsonify({'Status':'Deleted','Item':item})
+            response.status_code = 200
+            return response
 
-
+    response = jsonify({'Status':'Not in Menu','Item':item})
+    response.status_code = 404
 if __name__ == "__main__":
     app.run(debug=True)
 

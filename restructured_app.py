@@ -14,7 +14,7 @@ def hello_world():
 @app.route('/showmenu')
 def show_menu():
     response = jsonify({'Menu':menucard})
-    response.status_code = 200
+ t   response.status_code = 200
     return response
 
 @app.route('/orders/', methods = ['GET', 'POST', 'PUT', 'DELETE'])
@@ -39,7 +39,7 @@ def order():
             response = jsonify({'Status':'Added','Item':d})
             response.status_code = 200
         elif id>= len(menucard):
-            response = jsonify({'Status': 'Not in menu'})
+            response = jsonify({'Satus': 'Not in menu'})
             response.status_code = 404
         elif menucard[id] in orders:
             for i in orders:

@@ -14,7 +14,7 @@ def hello_world():
 @app.route('/showmenu')
 def show_menu():
     response = jsonify({'Menu':menucard})
- t   response.status_code = 200
+    response.status_code = 200
     return response
 
 @app.route('/orders/', methods = ['GET', 'POST', 'PUT', 'DELETE'])
@@ -31,23 +31,47 @@ def order():
         # retrieve order
     elif request.method == 'POST':
         response = {}
-        id = int(request.args.get('id'))
-        if id<len(menucard) and menucard[id] not in orders:
-            d = menucard[id]
+        payload = request.get_json()
+        id1 = int(payload['id'])
+        if id1<len(menucard) and menucard[id1] not in orders:
+            d = menucard[id1]
             d['Quantity'] = 1
             orders.append(d)
             response = jsonify({'Status':'Added','Item':d})
             response.status_code = 200
-        elif id>= len(menucard):
+        elif id1>= len(menucard):
             response = jsonify({'Satus': 'Not in menu'})
             response.status_code = 404
-        elif menucard[id] in orders:
+        elif menucard[id1] in orders:
             for i in orders:
-                if i['Item'] == menucard[id]['Item']:
+                if i['Item'] == menucard[id1]['Item']:
                     i['Quantity']+=1
-            response = jsonify({'Status': 'Updated quantity','Item':menucard[id]})
+            response = jsonify({'Status': 'Updated quantity','Item':menucard[id1]})
             response.status_code =200
+        return response
+    elif request.method == 'PUT':
+        response = {}
+        payload = request.get_json()
+        item = int(payload['item1'])
+        f = False
+        for i in menucard:
+            if i ==item:
+                f = True
+        if not f:
+            menucard.append(item)
+            response = jsonify({'Status': 'Added','Item':item})
+            response.status_code =201
+        else:
+            response = jsonify({'Status': 'Already There','Item':item})
+            response.status_code =400
         return response
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+'''
+Curl command
+curl -H "Content-Type: application/json" --request POST -d '{"id":2}' http://127.0.0.1:5000/orders/
+
+curl -H "Content-Type: application/json" --request POST -d '{'item1':{'Item' : 'Curd', 'Price':10}}' http://127.0.0.1:5000/orders/
+'''

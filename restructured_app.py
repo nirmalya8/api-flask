@@ -17,7 +17,7 @@ def show_menu():
     response.status_code = 200
     return response
 
-@app.route('/orders/', methods = ['GET', 'POST', 'PUT', 'DELETE'])
+@app.route('/orders', methods = ['GET', 'POST', 'PUT', 'DELETE'])
 def order():
     if request.method == 'GET':
         response = ' '
@@ -52,7 +52,7 @@ def order():
     elif request.method == 'PUT':
         response = {}
         payload = request.get_json()
-        item = int(payload['item1'])
+        item = payload["item1"]
         f = False
         for i in menucard:
             if i ==item:
@@ -65,6 +65,21 @@ def order():
             response = jsonify({'Status': 'Already There','Item':item})
             response.status_code =400
         return response
+    elif request.method == 'DELETE':
+        response = {}
+        payload = request.get_json()
+        itemid = payload["id"]
+        if itemid<len(menucard) and itemid>=0:
+            item = menucard[itemid]
+            del menucard[itemid]
+            response = jsonify({'Status':'Deleted','Item':item})
+            response.status_code = 200
+            return response
+
+        response = jsonify({'Status':'Not in Menu','ItemID':itemid})
+        response.status_code = 404
+        return response
+
 
 if __name__ == "__main__":
     app.run(debug=True)
@@ -72,6 +87,8 @@ if __name__ == "__main__":
 '''
 Curl command
 curl -H "Content-Type: application/json" --request POST -d '{"id":2}' http://127.0.0.1:5000/orders/
-
-curl -H "Content-Type: application/json" --request POST -d '{'item1':{'Item' : 'Curd', 'Price':10}}' http://127.0.0.1:5000/orders/
+curl -X GET http://127.0.0.1:5000/orders
+curl -X GET http://127.0.0.1:5000/showmenu
+curl -H "Content-Type: application/json" --request PUT -d '{"item1":{"Item" : "Curd", "Price":10}}' http://127.0.0.1:5000/orders/
+curl -H "Content-Type: application/json" --request DELETE -d '{"id":2}' http://127.0.0.1:5000/orders/
 '''

@@ -5,6 +5,14 @@ app = Flask(__name__)
 menucard = [{'Item' : 'Rice', 'Price':10},{'Item': 'Dal','Price':15},{'Item':'Chicken','Price':20},{'Item':'Mutton', 'Price':25},{'Item':'Fish','Price':20},{'Item':'IceCream','Price':10}]
 orders = []
 
+'''
+Curl commands for each method:
+curl -H "Content-Type: application/json" --request POST -d '{"id":2}' http://127.0.0.1:5000/orders
+curl -X GET http://127.0.0.1:5000/orders
+curl -X GET http://127.0.0.1:5000/showmenu
+curl -H "Content-Type: application/json" --request PUT -d '{"item1":{"Item" : "Curd", "Price":10}}' http://127.0.0.1:5000/orders
+'''
+
 @app.route('/') 
 def hello_world():
     response = jsonify('Hello world!')
@@ -19,6 +27,7 @@ def show_menu():
 
 @app.route('/orders', methods = ['GET', 'POST', 'PUT', 'DELETE'])
 def order():
+    #GET Request for obtaining the list of already ordered items
     if request.method == 'GET':
         response = ' '
         if len(orders)==0:
@@ -28,7 +37,8 @@ def order():
             response = jsonify({'Your orders':orders})
             response.status_code = 200
         return response
-        # retrieve order
+
+    # POST Method to order an item    
     elif request.method == 'POST':
         response = {}
         payload = request.get_json()
@@ -49,6 +59,8 @@ def order():
             response = jsonify({'Status': 'Updated quantity','Item':menucard[id1]})
             response.status_code =200
         return response
+
+    # PUT Method to add an item to the menucard    
     elif request.method == 'PUT':
         response = {}
         payload = request.get_json()
@@ -65,6 +77,8 @@ def order():
             response = jsonify({'Status': 'Already There','Item':item})
             response.status_code =400
         return response
+
+    #DELETE Method to delete an item from the menucard
     elif request.method == 'DELETE':
         response = {}
         payload = request.get_json()
@@ -83,12 +97,3 @@ def order():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-'''
-Curl command
-curl -H "Content-Type: application/json" --request POST -d '{"id":2}' http://127.0.0.1:5000/orders/
-curl -X GET http://127.0.0.1:5000/orders
-curl -X GET http://127.0.0.1:5000/showmenu
-curl -H "Content-Type: application/json" --request PUT -d '{"item1":{"Item" : "Curd", "Price":10}}' http://127.0.0.1:5000/orders/
-curl -H "Content-Type: application/json" --request DELETE -d '{"id":2}' http://127.0.0.1:5000/orders/
-'''

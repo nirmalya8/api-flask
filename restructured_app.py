@@ -11,6 +11,7 @@ curl -H "Content-Type: application/json" --request POST -d '{"id":2}' http://127
 curl -X GET http://127.0.0.1:5000/orders
 curl -X GET http://127.0.0.1:5000/showmenu
 curl -H "Content-Type: application/json" --request PUT -d '{"item1":{"Item" : "Curd", "Price":10}}' http://127.0.0.1:5000/orders
+curl -H "Content-Type: application/json" --request DELETE -d '{"id":1}'
 '''
 
 @app.route('/') 
@@ -77,7 +78,7 @@ def order():
             response = jsonify({'Status': 'Already There','Item':item})
             response.status_code =400
         return response
-
+        
     #DELETE Method to delete an item from the menucard
     elif request.method == 'DELETE':
         response = {}

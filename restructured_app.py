@@ -1,4 +1,4 @@
-from flask import Flask, json, jsonify,request
+from flask import Flask, jsonify,request
 #import request
 app = Flask(__name__) 
 
@@ -16,16 +16,20 @@ curl -H "Content-Type: application/json" --request DELETE -d '{"id":1}'
 
 @app.route('/') 
 def hello_world():
+    # The home route, which shows "Hello World"
     response = jsonify('Hello world!')
     response.status_code = 200
     return response
 
 @app.route('/showmenu')
 def show_menu():
+    # This route will show the menucard
     response = jsonify({'Menu':menucard})
     response.status_code = 200
     return response
 
+# The following route will handle all requests: GET, POST, PUT, and DELETE.
+# We will access this using the cuRL command and pass data as payloads. 
 @app.route('/orders', methods = ['GET', 'POST', 'PUT', 'DELETE'])
 def order():
     #GET Request for obtaining the list of already ordered items
@@ -39,7 +43,7 @@ def order():
             response.status_code = 200
         return response
 
-    # POST Method to order an item    
+    # POST Method to add an item to orders
     elif request.method == 'POST':
         response = {}
         payload = request.get_json()
@@ -61,7 +65,7 @@ def order():
             response.status_code =200
         return response
 
-    # PUT Method to add an item to the menucard    
+    # PUT Method to add an item to the menucard(only for staff)
     elif request.method == 'PUT':
         response = {}
         payload = request.get_json()
@@ -79,7 +83,7 @@ def order():
             response.status_code =400
         return response
         
-    #DELETE Method to delete an item from the menucard
+    #DELETE Method to delete an item from the menucard(only for staff)
     elif request.method == 'DELETE':
         response = {}
         payload = request.get_json()

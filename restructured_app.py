@@ -8,11 +8,13 @@ orders = []
 '''
 Curl commands for each method:
 curl -H "Content-Type: application/json" --request POST -d '{"id":2}' http://127.0.0.1:5000/orders
-curl -X GET http://127.0.0.1:5000/orders
-curl -X GET http://127.0.0.1:5000/showmenu
+curl --request GET http://127.0.0.1:5000/orders
+curl --request GET http://127.0.0.1:5000/showmenu
 curl -H "Content-Type: application/json" --request PUT -d '{"item1":{"Item" : "Curd", "Price":10}}' http://127.0.0.1:5000/orders
 curl -H "Content-Type: application/json" --request DELETE -d '{"id":1}'
 '''
+
+
 
 @app.route('/') 
 def hello_world():
@@ -27,6 +29,8 @@ def show_menu():
     response = jsonify({'Menu':menucard})
     response.status_code = 200
     return response
+
+
 
 # The following route will handle all requests: GET, POST, PUT, and DELETE.
 # We will access this using the cuRL command and pass data as payloads. 

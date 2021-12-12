@@ -1,4 +1,4 @@
-from flask import Flask, jsonify,request
+from flask import Flask, json, jsonify,request
 #import request
 app = Flask(__name__) 
 
@@ -8,33 +8,60 @@ orders = []
 '''
 Curl commands for each method:
 curl -H "Content-Type: application/json" --request POST -d '{"id":2}' http://127.0.0.1:5000/orders
-curl --request GET http://127.0.0.1:5000/orders
-curl --request GET http://127.0.0.1:5000/showmenu
-curl -H "Content-Type: application/json" --request PUT -d '{"item1":{"Item" : "Curd", "Price":10}}' http://127.0.0.1:5000/orders
-curl -H "Content-Type: application/json" --request DELETE -d '{"id":1}'
+curl -X GET http://127.0.0.1:5000/orders
+curl -X GET http://127.0.0.1:5000/menu
+curl -H "Content-Type: application/json" --request PUT -d '{"item1":{"Item" : "Curd", "Price":10}}' http://127.0.0.1:5000/menu
+curl -H "Content-Type: application/json" --request DELETE -d '{"id":1}' http://127.0.0.1:5000/menu'
 '''
-
-
 
 @app.route('/') 
 def hello_world():
-    # The home route, which shows "Hello World"
     response = jsonify('Hello world!')
     response.status_code = 200
     return response
 
-@app.route('/showmenu')
+@app.route('/menu',methods = ['GET', 'PUT', 'DELETE'])
 def show_menu():
-    # This route will show the menucard
-    response = jsonify({'Menu':menucard})
-    response.status_code = 200
-    return response
+    if request.method == 'GET':
+        response = jsonify({'Menu':menucard})
+        response.status_code = 200
+        return response
+    # PUT Method to add an item to the menucard
+    elif request.method == 'PUT':
+        response = {}
+        payload = request.get_json()
+        item = payload["item1"]
+        f = False
+        for i in menucard:
+            if i ==item:
+                f = True
+        if not f:
+            menucard.append(item)
+            response = jsonify({'Status': 'Added','Item':item})
+            response.status_code =201
+        else:
+            response = jsonify({'Status': 'Already There','Item':item})
+            response.status_code =400
+        return response
+        
+    #DELETE Method to delete an item from the menucard
+    elif request.method == 'DELETE':
+        response = {}
+        payload = request.get_json()
+        itemid = payload["id"]
+        if itemid<len(menucard) and itemid>=0:
+            item = menucard[itemid]
+            del menucard[itemid]
+            response = jsonify({'Status':'Deleted','Item':item})
+            response.status_code = 200
+            return response
+
+        response = jsonify({'Status':'Not in Menu','ItemID':itemid})
+        response.status_code = 404
+        return response
 
 
-
-# The following route will handle all requests: GET, POST, PUT, and DELETE.
-# We will access this using the cuRL command and pass data as payloads. 
-@app.route('/orders', methods = ['GET', 'POST', 'PUT', 'DELETE'])
+@app.route('/orders', methods = ['GET', 'POST'])
 def order():
     #GET Request for obtaining the list of already ordered items
     if request.method == 'GET':
@@ -47,7 +74,7 @@ def order():
             response.status_code = 200
         return response
 
-    # POST Method to add an item to orders
+    # POST Method to order an item    
     elif request.method == 'POST':
         response = {}
         payload = request.get_json()
@@ -69,39 +96,7 @@ def order():
             response.status_code =200
         return response
 
-    # PUT Method to add an item to the menucard(only for staff)
-    elif request.method == 'PUT':
-        response = {}
-        payload = request.get_json()
-        item = payload["item1"]
-        f = False
-        for i in menucard:
-            if i ==item:
-                f = True
-        if not f:
-            menucard.append(item)
-            response = jsonify({'Status': 'Added','Item':item})
-            response.status_code =201
-        else:
-            response = jsonify({'Status': 'Already There','Item':item})
-            response.status_code =400
-        return response
-        
-    #DELETE Method to delete an item from the menucard(only for staff)
-    elif request.method == 'DELETE':
-        response = {}
-        payload = request.get_json()
-        itemid = payload["id"]
-        if itemid<len(menucard) and itemid>=0:
-            item = menucard[itemid]
-            del menucard[itemid]
-            response = jsonify({'Status':'Deleted','Item':item})
-            response.status_code = 200
-            return response
-
-        response = jsonify({'Status':'Not in Menu','ItemID':itemid})
-        response.status_code = 404
-        return response
+    
 
 
 if __name__ == "__main__":
